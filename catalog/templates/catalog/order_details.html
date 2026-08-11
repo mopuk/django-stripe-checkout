@@ -1,0 +1,42 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Order details for {{order.id}}</title>
+    <script src="https://js.stripe.com/v3/"></script>
+    <script src="{% static 'catalog/checkout.js' %}" defer></script>
+    <style>
+      #payment-element {
+        width: 100%;
+        min-height: 250px;
+        margin-bottom: 1rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div>
+      <h1>Order #{{order.id}}</h1>
+      <ul>
+        {% for item in items %}
+        <li>
+          <div>{{item.item.name}} x{{item.quantity}}</div>
+          <div>{{item.item.price}} {{currency}}</div>
+        </li>
+        {% endfor %}
+      </ul>
+      <h3>Total {{ total_price }} {{currency}}</h3>
+
+      <form
+        id="payment-form"
+        data-stripe-key="{{ stripe_publishable_key }}"
+        data-order-id="{{ order.id }}"
+      >
+        {% csrf_token %}
+        <div id="payment-element"></div>
+        <button id="submit">Pay</button>
+      </form>
+    </div>
+  </body>
+</html>

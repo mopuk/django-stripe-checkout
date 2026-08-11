@@ -5,18 +5,11 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Item</title>
+    <script src="{% static 'catalog/order.js' %}" defer></script>
   </head>
   <body>
-    <h1>Item {{id}}</h1>
-    <button
-      id="buy-button"
-      data-item-id="{{ id }}"
-      data-stripe-key="{{ stripe_publishable_key }}"
-    >
-      Buy
-    </button>
+    <h1>Item {{item.id}}</h1>
+    <button id="add-button" data-item-id="{{ item.id }}">Add to order</button>
+    <div id="checkout-container"></div>
   </body>
-
-  <script src="https://js.stripe.com/v3/"></script>
-  <script src="{% static 'catalog/checkout.js' %}" ;></script>
 </html>
