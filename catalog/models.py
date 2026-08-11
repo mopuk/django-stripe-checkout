@@ -39,7 +39,10 @@ class Order(models.Model):
         total = self.items.aggregate(
             total=models.Sum(
                 models.F("quantity") * models.F("item__price"),
-                output_field=models.DecimalField(),
+                output_field=models.DecimalField(
+                    max_digits=10,
+                    decimal_places=2,
+                ),
             )
         )["total"] or Decimal("0.00")
 
@@ -50,6 +53,27 @@ class Order(models.Model):
             total = self.tax.apply_tax(total)
 
         return total
+
+
+class OrderItem(models.Model):
+    item = models.ForeignKey(Item, on_delete=models.PROTECT, related_name="order_items")
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name="items")
+    quantity = models.PositiveIntegerField(default=1)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["order", "item"],
+                name="unique_item_per_order",
+            ),
+        ]
+
+    @property
+    def total_price(self):
+        return self.item.price * self.quantity
+
+    def __str__(self):
+        return f"{self.quantity} x {self.item.name}"
 
 
 class Discount(models.Model):
@@ -67,13 +91,4 @@ class Tax(models.Model):
     order = models.OneToOneField(Order, on_delete=models.CASCADE, related_name="tax")
 
     def apply_tax(self, total):
-        return total - total * (self.percentage / Decimal("100.00"))
-
-
-class OrderItem(models.Model):
-    item = models.ForeignKey(Item, on_delete=models.PROTECT, related_name="order_items")
-    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name="items")
-    quantity = models.PositiveIntegerField(default=1)
-
-    def __str__(self):
-        return f"{self.quantity} x {self.item.name}"
+        return total + total * (self.percentage / Decimal("100.00"))
