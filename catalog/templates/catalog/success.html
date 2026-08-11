@@ -1,11 +1,48 @@
+{% load static %}
 <!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Success</title>
+    <title>Payment Successful</title>
+    <style>
+      body {
+        font-family: system-ui, sans-serif;
+        max-width: 500px;
+        margin: 3rem auto;
+        padding: 0 1rem;
+        color: #333;
+        text-align: center;
+      }
+      .card {
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        padding: 2rem;
+        background: #fff;
+      }
+      .icon {
+        font-size: 2.5rem;
+        color: #28a745;
+        margin-bottom: 0.5rem;
+      }
+      .btn {
+        display: inline-block;
+        margin-top: 1.5rem;
+        padding: 0.6rem 1.2rem;
+        background: #0066cc;
+        color: #fff;
+        border-radius: 4px;
+        text-decoration: none;
+        font-weight: bold;
+      }
+    </style>
   </head>
   <body>
-    <h1>Successfully purchased item</h1>
+    <div class="card">
+      <div class="icon">&#10004;</div>
+      <h1>Payment Successful</h1>
+      <p>Thank you for your purchase!</p>
+      <a href="/catalog" class="btn">Back to catalog</a>
+    </div>
   </body>
 </html>

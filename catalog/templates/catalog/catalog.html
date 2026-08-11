@@ -1,20 +1,105 @@
+{% load static %}
 <!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Catalog</title>
+    <script src="https://js.stripe.com/v3/"></script>
+    <script src="{% static 'catalog/checkout.js' %}" defer></script>
+    <script src="{% static 'catalog/order.js' %}" defer></script>
+    <style>
+      body {
+        font-family: system-ui, sans-serif;
+        max-width: 800px;
+        margin: 2rem auto;
+        padding: 0 1rem;
+        color: #333;
+      }
+      ul {
+        list-style: none;
+        padding: 0;
+      }
+      .layout {
+        display: flex;
+        gap: 2rem;
+        align-items: start;
+      }
+      .card {
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        padding: 1rem;
+        margin-bottom: 1rem;
+      }
+      .card a {
+        text-decoration: none;
+        color: inherit;
+      }
+      .btn,
+      .btn:visited {
+        display: inline-block;
+        padding: 0.5rem 1rem;
+        background: #125ca6;
+        color: #ffffff;
+        border: none;
+        border-radius: 4px;
+        text-decoration: none;
+        cursor: pointer;
+      }
+      .btn-danger,
+      .btn-danger:visited {
+        background: #dc3545;
+        color: #ffffff;
+      }
+    </style>
   </head>
   <body>
-    <ul>
-      {% for item in items %}
-      <li>
-        <a href="{% url 'item' item.id %}">
-          <h2>{{item.name}}</h2>
-          <p>{{item.description}}</p>
-        </a>
-      </li>
-      {%endfor%}
-    </ul>
+    <div class="layout">
+      <div style="flex: 2">
+        <h2>Catalog</h2>
+        <ul>
+          {% for item in items %}
+          <li class="card">
+            <a href="{% url 'item' item.id %}">
+              <h3>{{ item.name }}</h3>
+              <p>{{ item.description }}</p>
+            </a>
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+
+      {% if order %}
+      <div class="card" style="flex: 1">
+        <h2>Your order</h2>
+        <ul>
+          {% for order_item in order.items.all %}
+          <li style="margin-bottom: 0.5rem">
+            {{ order_item.item.name }} x{{ order_item.quantity }} -
+            {{order_item.item.price }} {{ order_item.item.currency }}
+          </li>
+          {% endfor %}
+        </ul>
+        <div
+          style="
+            margin-top: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+          "
+        >
+          <a
+            href="{% url 'order_details' order.id %}"
+            class="btn"
+            style="color: white; text-align: center"
+            >Go to checkout</a
+          >
+          <button id="remove-order-btn" class="btn btn-danger">
+            Remove order
+          </button>
+        </div>
+      </div>
+      {% endif %}
+    </div>
   </body>
 </html>

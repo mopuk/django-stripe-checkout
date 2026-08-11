@@ -25,6 +25,14 @@ urlpatterns = [
     path("", RedirectView.as_view(pattern_name="catalog", permanent=False)),
     path("admin/", admin.site.urls),
     path("catalog/", include("catalog.urls")),
-    path("buy/<int:id>/", views.buy, name="buy"),
-    path("success/", views.success, name="success"),
+    path("buy/<int:order_id>/", views.buy, name="buy"),
+    path("order/success/<int:order_id>", views.order_success, name="success"),
+    path("order/add/<int:item_id>", views.add_item_to_order, name="add_item_to_order"),
+    path(
+        "order/remove/<int:item_id>",
+        views.remove_item_from_order,
+        name="remove_item_to_order",
+    ),
+    path("order/details/<int:order_id>", views.order_detail, name="order_details"),
+    path("order/remove", views.remove_order, name="remove_order"),
 ]
