@@ -28,7 +28,7 @@ SECRET_KEY = "django-insecure-()l77jc-7^ec99docjoic5q+-3(egflv(t3(4#msdv@ov2@0(c
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ["django-stripe-checkout-136t.onrender.com"]
+ALLOWED_HOSTS = ["django-stripe-checkout-136t.onrender.com", "127.0.0.1"]
 
 
 # Application definition
@@ -45,6 +45,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
