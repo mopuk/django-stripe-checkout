@@ -28,8 +28,12 @@ def item(request: HttpRequest, item_id) -> HttpResponse:
     )
 
 
-def buy(request: HttpRequest, item_id: int) -> JsonResponse:
-    item = get_object_or_404(Item, id=item_id)
+def success(request: HttpRequest, id: int) -> HttpResponse:
+    return render(request, "catalog/success.html", {"id": id})
+
+
+def buy(request: HttpRequest, id: int) -> JsonResponse:
+    item = get_object_or_404(Item, id=id)
 
     session = client.v1.checkout.sessions.create(
         params={
@@ -41,12 +45,13 @@ def buy(request: HttpRequest, item_id: int) -> JsonResponse:
                             "name": item.name,
                             "description": item.description,
                         },
-                        "unit_amount": 1,
+                        "unit_amount": int(item.price) * 100,
                     },
                     "quantity": 1,
                 }
             ],
             "mode": "payment",
+            "success_url": "http://127.0.0.1:8000/success",
         },
     )
-    return JsonResponse({id: session.id})
+    return JsonResponse({"id": session.id})
