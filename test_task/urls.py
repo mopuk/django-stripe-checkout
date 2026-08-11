@@ -33,5 +33,6 @@ urlpatterns = [
         views.remove_item_from_order,
         name="remove_item_to_order",
     ),
-    path("order/details/<int:order_id>", views.order_detail, name="order_detail"),
+    path("order/details/<int:order_id>", views.order_detail, name="order_details"),
+    path("order/remove", views.remove_order, name="remove_order"),
 ]
