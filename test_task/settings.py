@@ -28,8 +28,21 @@ SECRET_KEY = "django-insecure-()l77jc-7^ec99docjoic5q+-3(egflv(t3(4#msdv@ov2@0(c
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["django-stripe-checkout-136t.onrender.com", "127.0.0.1"]
 
+RENDER_HOST = os.environ.get(
+    "RENDER_HOST",
+    "django-stripe-checkout-136t.onrender.com",
+)
+
+ALLOWED_HOSTS = [
+    "localhost",
+    "127.0.0.1",
+    RENDER_HOST,
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    f"https://{RENDER_HOST}",
+]
 
 # Application definition
 
