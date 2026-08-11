@@ -17,8 +17,14 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import include, path
+from django.views.generic import RedirectView
+
+from catalog import views
 
 urlpatterns = [
+    path("", RedirectView.as_view(pattern_name="catalog", permanent=False)),
     path("admin/", admin.site.urls),
     path("catalog/", include("catalog.urls")),
+    path("buy/<int:id>/", views.buy, name="buy"),
+    path("success/", views.success, name="success"),
 ]
