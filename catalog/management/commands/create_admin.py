@@ -8,9 +8,20 @@ class Command(BaseCommand):
     def handle(self, *args, **kwargs):
         User = get_user_model()
 
-        username = os.environ["DJANGO_SUPERUSER_USERNAME"]
-        email = os.environ["DJANGO_SUPERUSER_EMAIL"]
-        password = os.environ["DJANGO_SUPERUSER_PASSWORD"]
+        users = [
+            {
+                "username": os.environ["DJANGO_ADMIN_USERNAME"],
+                "email": os.environ["DJANGO_ADMIN_EMAIL"],
+                "password": os.environ["DJANGO_ADMIN_PASSWORD"],
+            },
+            {
+                "username": os.environ["DJANGO_REVIEWER_USERNAME"],
+                "email": os.environ["DJANGO_REVIEWER_EMAIL"],
+                "password": os.environ["DJANGO_REVIEWER_PASSWORD"],
+            },
+        ]
 
-        if not User.objects.filter(username=username).exists():
-            User.objects.create(username=username, email=email, password=password)
+        for user_data in users:
+            if not User.objects.filter(username=user_data["username"]).exists():
+                User.objects.create_superuser(**user_data)
+                self.stdout.write(f"Created superuser: {user_data['username']}")
