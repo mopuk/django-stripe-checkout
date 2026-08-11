@@ -19,6 +19,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const response = await fetch(`/buy/${orderId}/`, {
       method: "POST",
       headers: { "Content-Type": "application/json", "X-CSRFToken": csrfToken },
+      credentials: "same-origin",
     });
 
     const { clientSecret } = await response.json();
