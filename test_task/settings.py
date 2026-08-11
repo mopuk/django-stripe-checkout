@@ -28,7 +28,7 @@ SECRET_KEY = "django-insecure-()l77jc-7^ec99docjoic5q+-3(egflv(t3(4#msdv@ov2@0(c
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["django-stripe-checkout-136t.onrender.com"]
 
 
 # Application definition
